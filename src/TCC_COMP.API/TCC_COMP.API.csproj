@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>45eaf646-4a5f-41b1-a41b-83f8046fedc6</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TCC_COMP.DOMAIN\TCC_COMP.DOMAIN.csproj" />
+    <ProjectReference Include="..\TCC_COMP.INFRA.DATA\TCC_COMP.INFRA.DATA.csproj" />
+    <ProjectReference Include="..\TCC_COMP.SERVICE\TCC_COMP.SERVICE.csproj" />
+  </ItemGroup>
+
+
+</Project>
