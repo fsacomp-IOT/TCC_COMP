@@ -13,15 +13,15 @@
         #region Atributos
 
         [Key]
-        public Guid Device_id { get; set; }
+        public Guid Device_Id { get; set; }
 
-        public string Device_name { get; set; }
+        public string Device_Name { get; set; }
 
         public bool Connected { get; set; }
 
-        public DateTime Created_at { get; set; }
+        public DateTime Created_At { get; set; }
 
-        public DateTime? Updated_at { get; set; }
+        public DateTime? Updated_At { get; set; }
 
         #endregion
 

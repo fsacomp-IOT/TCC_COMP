@@ -7,17 +7,17 @@
         
         public SensorTypeViewModel()
         {
-            created_at = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            Created_At = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
         #region Atributos
 
-        public int sensor_type_id { get; set; }
-        public string tipo { get; set; }
-        public string unitofmeasurement { get; set; }
-        public string created_at { get; set; }
-        public string updated_at { get; set; }
-        public bool active { get; set; }
+        public int Sensor_Type_Id { get; set; }
+        public string Tipo { get; set; }
+        public string Unitofmeasurement { get; set; }
+        public string Created_At { get; set; }
+        public string Updated_At { get; set; }
+        public bool Active { get; set; }
 
         #endregion
 

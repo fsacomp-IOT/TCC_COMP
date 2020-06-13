@@ -35,9 +35,9 @@
             }
         }
 
-        public async Task<Device> ObterDevicePorId(Guid device_id)
+        public async Task<DeviceViewModel> ObterDevicePorId(Guid device_id)
         {
-            var retorno = await _deviceRepository.ObterPorId(device_id);
+            var retorno = _mapper.Map<DeviceViewModel>(await _deviceRepository.ObterPorId(device_id));
 
             if (retorno != null)
             {
@@ -49,40 +49,18 @@
             }
         }
 
-        /// <summary>
-        /// Método para criação de novos Devices.
-        /// </summary>
-        /// <param name="newDevice">newDevice.</param>
-        /// <returns>Device.</returns>
-        public async Task<Device> AdicionarDevice(Device newDevice)
+        public async Task<bool> AdicionarDevice(DeviceViewModel newDevice)
         {
-            var retorno = await this._deviceRepository.Adicionar(newDevice);
-
-            if (retorno != null)
-            {
-                return await this._deviceRepository.ObterPorId(Guid.Parse(retorno));
-            }
-
-            return null;
+            return await _deviceRepository.Adicionar(_mapper.Map<Device>(newDevice));
         }
 
-        public async Task<Device> AtualizarDevice(Guid device_id, Device alteracaoDevice)
+        public async Task<bool> AtualizarDevice(Guid device_id, DeviceViewModel alteracaoDevice)
         {
-            alteracaoDevice.Updated_at = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+            alteracaoDevice.Updated_At = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-            alteracaoDevice.Device_id = device_id;
+            alteracaoDevice.Device_Id = device_id;
 
-            var retorno = await _deviceRepository.Atualizar(alteracaoDevice);
-
-            if (retorno)
-            {
-                Device NovosDados = await _deviceRepository.ObterPorId(device_id);
-                return NovosDados;
-            }
-            else
-            {
-                return null;
-            }
+            return await _deviceRepository.Atualizar(_mapper.Map<Device>(alteracaoDevice));
         }
 
         public async Task<bool> DeletarDevice(Guid device_id)

@@ -5,7 +5,7 @@
 
     public interface IRepository<T>
     {
-        Task<string> Adicionar(T entidade);
+        Task<bool> Adicionar(T entidade);
         Task<List<T>> ObterTodos();
         Task<bool> Atualizar(T entidade);
     }

@@ -9,9 +9,9 @@
     public interface IDeviceService
     {
         Task<List<DeviceViewModel>> ObterTodosDevices();
-        Task<Device> ObterDevicePorId(Guid device_id);
-        Task<Device> AdicionarDevice(Device newDevice);
-        Task<Device> AtualizarDevice(Guid device_id, Device alteracaoDevice);
+        Task<DeviceViewModel> ObterDevicePorId(Guid device_id);
+        Task<bool> AdicionarDevice(DeviceViewModel newDevice);
+        Task<bool> AtualizarDevice(Guid device_id, DeviceViewModel alteracaoDevice);
         Task<bool> DeletarDevice(Guid device_id);
     }
 }

@@ -86,17 +86,17 @@
         /// </summary>
         /// <param name="newDevice">Novo Dispositivo.</param>
         /// <returns>string.</returns>
-        public async Task<string> Adicionar(Device newDevice)
+        public async Task<bool> Adicionar(Device newDevice)
         {
-            string retorno = null;
+            bool retorno = false;
 
             var dynamicParameters = new DynamicParameters();
             dynamicParameters.AddDynamicParams(new
             {
-                newDevice.Device_id,
-                newDevice.Device_name,
+                newDevice.Device_Id,
+                newDevice.Device_Name,
                 newDevice.Connected,
-                newDevice.Created_at,
+                newDevice.Created_At,
             });
 
             this.command = "INSERT INTO \"TCC_COMP\".\"Device\"(device_id, device_name, connected, created_at) VALUES (@device_id, @device_name, @connected, @created_at)";
@@ -111,7 +111,7 @@
 
                     if (retornoQuery != 0)
                     {
-                        retorno = newDevice.Device_id.ToString();
+                        retorno = true;
                     }
 
                     return retorno;
@@ -129,9 +129,9 @@
 
             var dynamicParamenters = new DynamicParameters(new
             {
-                alteracaoDevice.Device_name,
-                alteracaoDevice.Updated_at,
-                alteracaoDevice.Device_id,
+                alteracaoDevice.Device_Name,
+                alteracaoDevice.Updated_At,
+                alteracaoDevice.Device_Id,
             });
 
             this.command = "UPDATE \"TCC_COMP\".\"Device\" SET device_name = @Device_name, connected = true, updated_at = @Updated_at WHERE device_id = @Device_id";

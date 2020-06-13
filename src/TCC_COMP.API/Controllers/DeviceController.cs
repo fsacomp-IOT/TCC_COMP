@@ -50,7 +50,7 @@ namespace TCC_COMP.API.Controllers
         [HttpGet("{device_id:guid}")]
         public async Task<ActionResult<DeviceViewModel>> ObterPorId(Guid device_id)
         {
-            var retorno = _mapper.Map<DeviceViewModel>(await _deviceService.ObterDevicePorId(device_id));
+            var retorno = await _deviceService.ObterDevicePorId(device_id);
 
             if (retorno.Device_Name != null)
             {
@@ -58,19 +58,18 @@ namespace TCC_COMP.API.Controllers
             }
             else
             {
-                return BadRequest();
+                return NoContent();
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<DeviceViewModel>> Salvar(DeviceViewModel newDevice)
+        public async Task<ActionResult<bool>> Salvar(DeviceViewModel newDevice)
         {
-            var retorno = await _deviceService.AdicionarDevice(_mapper.Map<Device>(newDevice));
+            var retorno = await _deviceService.AdicionarDevice(newDevice);
 
-            if (retorno != null)
+            if (retorno)
             {
-                newDevice = _mapper.Map<DeviceViewModel>(retorno);
-                return CreatedAtAction("Salvar", newDevice);
+                return Ok(retorno);
             }
             else
             {
@@ -81,13 +80,11 @@ namespace TCC_COMP.API.Controllers
         [HttpPut("{device_id:guid}")]
         public async Task<ActionResult<DeviceViewModel>> Atualizar(Guid device_id, DeviceViewModel alteracaoDevice)
         {
-            var retorno = await _deviceService.AtualizarDevice(device_id, _mapper.Map<Device>(alteracaoDevice));
+            var retorno = await _deviceService.AtualizarDevice(device_id, alteracaoDevice);
 
-            if (retorno != null)
+            if (retorno)
             {
-                alteracaoDevice = _mapper.Map<DeviceViewModel>(retorno);
-
-                return Ok(alteracaoDevice);
+                return Ok(retorno);
             }
             else
             {
@@ -102,7 +99,7 @@ namespace TCC_COMP.API.Controllers
 
             if (retorno)
             {
-                return Ok("Dispositivo excluido com sucesso");
+                return Ok(retorno);
             }
             else
             {

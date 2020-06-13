@@ -69,7 +69,7 @@
             }
         }
 
-        public async Task<string> Adicionar(SensorType newSensorType)
+        public async Task<bool> Adicionar(SensorType newSensorType)
         {
             var dynamicParameters = new DynamicParameters(new
             {
@@ -78,7 +78,7 @@
                 newSensorType.Created_at,
             });
 
-            command = "INSERT INTO \"TCC_COMP\".\"SensorType\" (tipo, unitofmeasurement, created_at, active) VALUES (@tipo, @unitofmeasurement, @created_at, true) RETURNING sensor_type_id";
+            command = "INSERT INTO \"TCC_COMP\".\"SensorType\" (tipo, unitofmeasurement, created_at, active) VALUES (@tipo, @unitofmeasurement, @created_at, true)";
 
             try
             {
@@ -86,21 +86,21 @@
                 {
                     await connection.OpenAsync();
 
-                    var retorno = await connection.ExecuteScalarAsync(command, dynamicParameters);
+                    var retorno = await connection.ExecuteAsync(command, dynamicParameters);
 
-                    if (retorno != null)
+                    if (retorno != 0)
                     {
-                        return retorno.ToString();
+                        return true;
                     }
                     else
                     {
-                        return "0";
+                        return false;
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "0";
+                return false;
             }
         }
 
@@ -161,7 +161,7 @@
                     return retorno;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return retorno;
             }
