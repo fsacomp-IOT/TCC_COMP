@@ -23,7 +23,7 @@
         [HttpGet]
         public async Task<ActionResult<List<SensorTypeViewModel>>> ObterTodos()
         {
-            var SensorTypes = _mapper.Map<List<SensorTypeViewModel>>(await _sensorTypeService.ObterTodosSensorTypes());
+            var SensorTypes = await _sensorTypeService.ObterTodosSensorTypes();
 
             if (SensorTypes.Count > 0)
             {
@@ -39,7 +39,7 @@
         [HttpGet("{sensor_type_id:int}")]
         public async Task<ActionResult<SensorTypeViewModel>> ObterPorId(int sensor_type_id)
         {
-            var SensorType = _mapper.Map<SensorTypeViewModel>(await _sensorTypeService.ObterSensorTypePorId(sensor_type_id));
+            var SensorType = await _sensorTypeService.ObterSensorTypePorId(sensor_type_id);
 
             if (SensorType != null)
             {

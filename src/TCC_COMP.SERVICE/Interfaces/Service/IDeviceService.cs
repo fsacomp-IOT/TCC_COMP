@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using TCC_COMP.DOMAIN.Entities;
     using TCC_COMP.SERVICE.ViewModels;
 
     public interface IDeviceService

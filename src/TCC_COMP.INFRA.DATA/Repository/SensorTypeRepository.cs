@@ -98,7 +98,7 @@
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -161,7 +161,7 @@
                     return retorno;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return retorno;
             }

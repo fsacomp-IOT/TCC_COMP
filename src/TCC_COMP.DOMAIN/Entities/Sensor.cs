@@ -6,34 +6,24 @@
 
     public class Sensor
     {
-        #region Construtor
-
-        public Sensor()
-        {
-            Sensor_id = Guid.NewGuid();
-            Created_at = DateTime.Now;
-        }
-
-        #endregion
-
         #region Atributos
 
         [Key]
-        public Guid Sensor_id { get; set; }
+        public Guid Sensor_Id { get; set; }
 
-        public string Sensor_name { get; set; }
+        public string Sensor_Name { get; set; }
 
-        public DateTime Created_at { get; set; }
+        public DateTime Created_At { get; set; }
 
-        public DateTime Update_at { get; set; }
+        public DateTime Update_At { get; set; }
 
         #endregion
 
         #region Foreing_Keys
 
-        public Guid Device_id { get; set; }
+        public Guid Device { get; set; }
 
-        public int Sensor_type_id { get; set; }
+        public int Sensor_Type { get; set; }
 
         public List<SensorEvent> Events { get; set; }
 
