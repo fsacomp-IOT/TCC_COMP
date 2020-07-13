@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using TCC_COMP.DOMAIN.Entities;
-using TCC_COMP.SERVICE.Interfaces.Service;
-using TCC_COMP.SERVICE.ViewModels;
-
-namespace TCC_COMP.API.Controllers
+﻿namespace TCC_COMP.API.Controllers
 {
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using Microsoft.AspNetCore.Mvc;
+    using TCC_COMP.SERVICE.Interfaces.Service;
+    using TCC_COMP.SERVICE.ViewModels;
+
     [Route("api/devices")]
     public class DeviceController : MainController
     {
@@ -47,12 +42,12 @@ namespace TCC_COMP.API.Controllers
             }
         }
 
-        [HttpGet("{device_id:guid}")]
-        public async Task<ActionResult<DeviceViewModel>> ObterPorId(Guid device_id)
+        [HttpGet("{device_id}")]
+        public async Task<ActionResult<DeviceViewModel>> ObterPorId(string device_id)
         {
             var retorno = await _deviceService.ObterDevicePorId(device_id);
 
-            if (retorno.Device_Name != null)
+            if (retorno.name != null)
             {
                 return Ok(retorno);
             }
@@ -77,8 +72,8 @@ namespace TCC_COMP.API.Controllers
             }
         }
 
-        [HttpPut("{device_id:guid}")]
-        public async Task<ActionResult<DeviceViewModel>> Atualizar(Guid device_id, DeviceViewModel alteracaoDevice)
+        [HttpPut("{device_id}")]
+        public async Task<ActionResult<DeviceViewModel>> Atualizar(string device_id, DeviceViewModel alteracaoDevice)
         {
             var retorno = await _deviceService.AtualizarDevice(device_id, alteracaoDevice);
 
@@ -92,8 +87,8 @@ namespace TCC_COMP.API.Controllers
             }
         }
 
-        [HttpDelete("{device_id:guid}")]
-        public async Task<ActionResult<string>> DeletarDevice(Guid device_id)
+        [HttpDelete("{device_id}")]
+        public async Task<ActionResult<string>> DeletarDevice(string device_id)
         {
             var retorno = await _deviceService.DeletarDevice(device_id);
 

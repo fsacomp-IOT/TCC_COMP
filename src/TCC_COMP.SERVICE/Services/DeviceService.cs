@@ -35,7 +35,7 @@
             }
         }
 
-        public async Task<DeviceViewModel> ObterDevicePorId(Guid device_id)
+        public async Task<DeviceViewModel> ObterDevicePorId(string device_id)
         {
             var retorno = _mapper.Map<DeviceViewModel>(await _deviceRepository.ObterPorId(device_id));
 
@@ -51,19 +51,19 @@
 
         public async Task<bool> AdicionarDevice(DeviceViewModel newDevice)
         {
+            newDevice.updated_at = newDevice.created_at;
+
             return await _deviceRepository.Adicionar(_mapper.Map<Device>(newDevice));
         }
 
-        public async Task<bool> AtualizarDevice(Guid device_id, DeviceViewModel alteracaoDevice)
+        public async Task<bool> AtualizarDevice(string device_id, DeviceViewModel alteracaoDevice)
         {
-            alteracaoDevice.Updated_At = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            alteracaoDevice.updated_at = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
-            alteracaoDevice.Device_Id = device_id;
-
-            return await _deviceRepository.Atualizar(_mapper.Map<Device>(alteracaoDevice));
+            return await _deviceRepository.Atualizar(device_id, _mapper.Map<Device>(alteracaoDevice));
         }
 
-        public async Task<bool> DeletarDevice(Guid device_id)
+        public async Task<bool> DeletarDevice(string device_id)
         {
             var retorno = await _deviceRepository.Deletar(device_id);
 

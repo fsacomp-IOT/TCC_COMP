@@ -9,9 +9,7 @@
         public AutoMapperConfig()
         {
             CreateMap<DeviceViewModel, Device>().ReverseMap();
-            CreateMap<SensorViewModel, Sensor>().ReverseMap();
-            CreateMap<SensorEventViewModel, SensorEvent>().ReverseMap();
-            CreateMap<SensorTypeViewModel, SensorType>().ReverseMap();
+            CreateMap<DeviceDataViewModel, DeviceData>().ReverseMap();
         }
     }
 }

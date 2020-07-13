@@ -1,12 +1,15 @@
 ﻿namespace TCC_COMP.SERVICE.Interfaces.Repository
 {
-    using System;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
     using TCC_COMP.DOMAIN.Entities;
 
-    public interface IDeviceRepository : IRepository<Device>
+    public interface IDeviceRepository
     {
-        Task<Device> ObterPorId(Guid id);
-        Task<bool> Deletar(Guid device_id);
+        Task<List<Device>> ObterTodos();
+        Task<Device> ObterPorId(string id);
+        Task<bool> Adicionar(Device newDevice);
+        Task<bool> Atualizar(string id, Device updatedDevice);
+        Task<bool> Deletar(string device_id);
     }
 }

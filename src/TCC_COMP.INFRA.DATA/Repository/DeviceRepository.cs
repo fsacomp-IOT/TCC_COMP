@@ -32,7 +32,7 @@
         /// <returns>List<Device></Device>.</returns>
         public async Task<List<Device>> ObterTodos()
         {
-            command = "SELECT * FROM \"TCC_COMP\".\"Device\" WHERE connected = true";
+            command = "SELECT * FROM \"TCC_COMP\".\"Device\"";
 
             try
             {
@@ -55,9 +55,9 @@
             }
         }
 
-        public async Task<Device> ObterPorId(Guid device_id)
+        public async Task<Device> ObterPorId(string device_id)
         {
-            command = "SELECT * FROM \"TCC_COMP\".\"Device\" WHERE device_id = @device_id";
+            command = "SELECT * FROM \"TCC_COMP\".\"Device\" WHERE id = @device_id";
 
             try
             {
@@ -65,7 +65,7 @@
                 {
                     await connection.OpenAsync();
 
-                    var retorno = await connection.QueryAsync<Device>(this.command, new { device_id = device_id });
+                    var retorno = await connection.QueryAsync<Device>(this.command, new { id = device_id });
 
                     return retorno.FirstOrDefault();
                 }
@@ -92,13 +92,13 @@
             var dynamicParameters = new DynamicParameters();
             dynamicParameters.AddDynamicParams(new
             {
-                newDevice.Device_Id,
-                newDevice.Device_Name,
-                newDevice.Connected,
-                newDevice.Created_At,
+                newDevice.id,
+                newDevice.name,
+                newDevice.created_at,
+                newDevice.updated_at
             });
 
-            this.command = "INSERT INTO \"TCC_COMP\".\"Device\"(device_id, device_name, connected, created_at) VALUES (@device_id, @device_name, @connected, @created_at)";
+            this.command = "INSERT INTO \"TCC_COMP\".\"Device\"(id, name, created_at, updated_at) VALUES (@id, @name, @created_at, @updated_at)";
 
             try
             {
@@ -122,18 +122,18 @@
             }
         }
 
-        public async Task<bool> Atualizar(Device alteracaoDevice)
+        public async Task<bool> Atualizar(string device_id, Device updateDevice)
         {
             bool retorno = false;
 
             var dynamicParamenters = new DynamicParameters(new
             {
-                alteracaoDevice.Device_Name,
-                alteracaoDevice.Updated_At,
-                alteracaoDevice.Device_Id,
+                updateDevice.name,
+                updateDevice.updated_at,
+                device_id
             });
 
-            this.command = "UPDATE \"TCC_COMP\".\"Device\" SET device_name = @Device_name, connected = true, updated_at = @Updated_at WHERE device_id = @Device_id";
+            this.command = "UPDATE \"TCC_COMP\".\"Device\" SET name = @name, updated_at = @updated_at WHERE id = @device_id";
 
             try
             {
@@ -158,11 +158,11 @@
             return retorno;
         }
 
-        public async Task<bool> Deletar(Guid device_id)
+        public async Task<bool> Deletar(string device_id)
         {
             bool retorno = false;
 
-            this.command = "UPDATE \"TCC_COMP\".\"Device\" SET connected = false WHERE device_id = @device_id";
+            this.command = "DELETE FROM \"TCC_COMP\".\"Device\" WHERE id = @id";
 
             try
             {
@@ -170,7 +170,7 @@
                 {
                     await connection.OpenAsync();
 
-                    var retornoQuery = await connection.ExecuteAsync(command, new { device_id = device_id });
+                    var retornoQuery = await connection.ExecuteAsync(command, new { id = device_id });
 
                     retorno = true;
                 }

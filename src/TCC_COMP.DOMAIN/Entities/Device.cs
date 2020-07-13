@@ -13,21 +13,19 @@
         #region Atributos
 
         [Key]
-        public Guid Device_Id { get; set; }
+        public string id { get; set; }
 
-        public string Device_Name { get; set; }
+        public string name { get; set; }
 
-        public bool Connected { get; set; }
+        public DateTime created_at { get; set; }
 
-        public DateTime Created_At { get; set; }
-
-        public DateTime? Updated_At { get; set; }
+        public DateTime? updated_at { get; set; }
 
         #endregion
 
-        #region Relation
+        #region Relations
 
-        public List<Sensor> Sensors { get; set; }
+        public List<DeviceData> DeviceData { get; set; }
 
         #endregion
     }

@@ -13,16 +13,12 @@ namespace TCC_COMP.API.Configurations
             #region Repository
 
             services.AddScoped<IDeviceRepository, DeviceRepository>();
-            services.AddScoped<ISensorTypeRepository, SensorTypeRepository>();
-            services.AddScoped<ISensorRepository, SensorRepository>();
 
             #endregion
 
             #region Services
 
             services.AddScoped<IDeviceService, DeviceService>();
-            services.AddScoped<ISensorTypeService, SensorTypeService>();
-            services.AddScoped<ISensorService, SensorService>();
 
             #endregion
 
