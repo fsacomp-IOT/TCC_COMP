@@ -22,7 +22,7 @@ namespace TCC_COMP.INFRA.DATA.Repository
 
         public async Task<List<DeviceData>> ObterUltimos24Registros(string device_id)
         {
-            command += "SELECT * FROM \"TCC_COMP\".\"Device_Data\" WHERE device_id = @device_id ORDER BY id DESC FETCH FIRST 24 ROWS ONLY";
+            command = "SELECT * FROM \"TCC_COMP\".\"Device_Data\" WHERE device_id = @device_id ORDER BY id DESC FETCH FIRST 24 ROWS ONLY";
 
             using(var connection = new NpgsqlConnection(ConnectionString))
             {
@@ -48,6 +48,34 @@ namespace TCC_COMP.INFRA.DATA.Repository
             }
         }
 
+        public async Task<DeviceData> ObterUltimoRegistro(string device_id)
+        {
+            command = "SELECT * FROM \"TCC_COMP\".\"Device_Data\" WHERE device_id = @device_id ORDER BY id DESC FETCH FIRST 1 ROWS ONLY";
+
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                try
+                {
+                    var retorno = await connection.QueryAsync<DeviceData>(command, new { device_id = device_id });
+
+                    return retorno.FirstOrDefault();
+                }
+                catch (Exception e)
+                {
+                    return new DeviceData();
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
         public async Task<bool> Adicionar(DeviceData newDeviceData)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
@@ -60,7 +88,7 @@ namespace TCC_COMP.INFRA.DATA.Repository
                 newDeviceData.solar_light
             });
 
-            command += "INSERT INTO \"TCC_COMP\".\"Device_Data\" (device_id, created_at, soil_humidity, air_humidity, air_temperature, solar_light) VALUES (@device_id, @created_at, @soil_humidity, @air_humidity, @air_temperature, @solar_light)";
+            command = "INSERT INTO \"TCC_COMP\".\"Device_Data\" (device_id, created_at, soil_humidity, air_humidity, air_temperature, solar_light) VALUES (@device_id, @created_at, @soil_humidity, @air_humidity, @air_temperature, @solar_light)";
 
             using (var connection = new NpgsqlConnection(ConnectionString))
             {

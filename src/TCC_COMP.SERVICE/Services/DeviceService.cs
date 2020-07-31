@@ -13,17 +13,39 @@
     public class DeviceService : IDeviceService
     {
         private readonly IDeviceRepository _deviceRepository;
+        private readonly IDeviceDataRepository _dataRepository;
         private readonly IMapper _mapper;
 
-        public DeviceService(IDeviceRepository deviceRepository, IMapper mapper)
+        public DeviceService(IDeviceRepository deviceRepository, IMapper mapper, IDeviceDataRepository dataRepository)
         {
             _deviceRepository = deviceRepository;
+            _dataRepository = dataRepository;
             _mapper = mapper;
         }
 
         public async Task<List<DeviceViewModel>> ObterTodosDevices()
         {
             var retorno = _mapper.Map<List<DeviceViewModel>>(await _deviceRepository.ObterTodos());
+
+            foreach(var ret in retorno)
+            {
+                ret.deviceData = _mapper.Map<DeviceDataViewModel>(await _dataRepository.ObterUltimoRegistro(ret.id));
+
+                if (ret.deviceData != null)
+                {
+                    TimeSpan interval = DateTime.Now - Convert.ToDateTime(ret.deviceData.created_at);
+
+                    if (interval.Hours <= 3)
+                    {
+                        ret.connected = "Conectado";
+                    }
+                    else
+                    {
+                        ret.connected = "Desconectado";
+                    }
+                }
+                
+            }
 
             if (retorno.Count != 0)
             {
@@ -37,7 +59,20 @@
 
         public async Task<DeviceViewModel> ObterDevicePorId(string device_id)
         {
-            var retorno = _mapper.Map<DeviceViewModel>(await _deviceRepository.ObterPorId(device_id));
+            DeviceViewModel retorno = _mapper.Map<DeviceViewModel>(await _deviceRepository.ObterPorId(device_id));
+
+            retorno.deviceData = _mapper.Map<DeviceDataViewModel>(await _dataRepository.ObterUltimoRegistro(device_id));
+
+            TimeSpan interval = DateTime.Now - Convert.ToDateTime(retorno.deviceData.created_at);
+
+            if(interval.Hours <= 3)
+            {
+                retorno.connected = "Conectado";
+            }
+            else
+            {
+                retorno.connected = "Desconectado";
+            }
 
             if (retorno != null)
             {
@@ -53,7 +88,21 @@
         {
             newDevice.updated_at = newDevice.created_at;
 
-            return await _deviceRepository.Adicionar(_mapper.Map<Device>(newDevice));
+            bool retorno = true;
+
+            var consultaExistente = await _deviceRepository.ObterPorId(newDevice.id);
+
+            if(consultaExistente == null)
+                retorno = await _deviceRepository.Adicionar(_mapper.Map<Device>(newDevice));
+
+            if (newDevice.deviceData != null && retorno != false)
+            {
+                newDevice.deviceData.device_id = newDevice.id;
+                newDevice.deviceData.created_at = DateTime.Now.ToString();
+                retorno = await _dataRepository.Adicionar(_mapper.Map<DeviceData>(newDevice.deviceData));
+            }
+
+            return retorno;
         }
 
         public async Task<bool> AtualizarDevice(string device_id, DeviceViewModel alteracaoDevice)

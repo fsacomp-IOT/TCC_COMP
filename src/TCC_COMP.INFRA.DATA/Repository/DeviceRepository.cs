@@ -15,15 +15,17 @@
     /// </summary>
     public class DeviceRepository : BaseRepository<Device>, IDeviceRepository
     {
+        private readonly IDeviceDataRepository _dataRepository;
         private string command = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceRepository"/> class.
         /// </summary>
         /// <param name="config">Injeção de Dependência utilizada para obter a ConnectionString.</param>
-        public DeviceRepository(IConfiguration config)
+        public DeviceRepository(IConfiguration config, IDeviceDataRepository dataRepository)
             : base(config)
         {
+            _dataRepository = dataRepository;
         }
 
         /// <summary>
@@ -65,7 +67,7 @@
                 {
                     await connection.OpenAsync();
 
-                    var retorno = await connection.QueryAsync<Device>(this.command, new { id = device_id });
+                    var retorno = await connection.QueryAsync<Device>(this.command, new { device_id = device_id });
 
                     return retorno.FirstOrDefault();
                 }
@@ -98,7 +100,7 @@
                 newDevice.updated_at
             });
 
-            this.command = "INSERT INTO \"TCC_COMP\".\"Device\"(id, name, created_at, updated_at) VALUES (@id, @name, @created_at, @updated_at)";
+            command = "INSERT INTO \"TCC_COMP\".\"Device\"(id, name, created_at, updated_at) VALUES (@id, @name, @created_at, @updated_at)";
 
             try
             {
@@ -133,7 +135,7 @@
                 device_id
             });
 
-            this.command = "UPDATE \"TCC_COMP\".\"Device\" SET name = @name, updated_at = @updated_at WHERE id = @device_id";
+            command = "UPDATE \"TCC_COMP\".\"Device\" SET name = @name, updated_at = @updated_at WHERE id = @device_id";
 
             try
             {
@@ -162,7 +164,7 @@
         {
             bool retorno = false;
 
-            this.command = "DELETE FROM \"TCC_COMP\".\"Device\" WHERE id = @id";
+            command = "DELETE FROM \"TCC_COMP\".\"Device\" WHERE id = @id";
 
             try
             {

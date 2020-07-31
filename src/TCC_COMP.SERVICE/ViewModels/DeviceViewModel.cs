@@ -24,11 +24,13 @@
 
         public string updated_at { get; set; }
 
+        public string connected { get; set; }
+
         #endregion
 
         #region Relation
 
-        public List<DeviceDataViewModel> DeviceData { get; set; }
+        public DeviceDataViewModel deviceData { get; set; }
 
         #endregion
     }

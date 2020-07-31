@@ -21,11 +21,13 @@
 
         public DateTime? updated_at { get; set; }
 
+        public string connected { get; set; }
+
         #endregion
 
         #region Relations
 
-        public List<DeviceData> DeviceData { get; set; }
+        public DeviceData deviceData { get; set; }
 
         #endregion
     }

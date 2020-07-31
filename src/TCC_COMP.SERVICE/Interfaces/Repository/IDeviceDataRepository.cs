@@ -7,6 +7,7 @@ namespace TCC_COMP.SERVICE.Interfaces.Repository
     public interface IDeviceDataRepository
     {
         Task<List<DeviceData>> ObterUltimos24Registros(string id);
+        Task<DeviceData> ObterUltimoRegistro(string id);
         Task<bool> Adicionar(DeviceData newDeviceData);
     }
 }
