@@ -1,5 +1,12 @@
 # API TCC_2020
 
+## Dashboard
+
+    |Aividade|Status|
+    |Device|OK|
+    |Device_Data|OK|
+    |Plants|Working|
+
 ## Rotas
 
 ### Device
