@@ -2,7 +2,8 @@
 
 ## Dashboard
 
-    |Aividade|Status|
+    |Atividade|Status|
+    |-|-|
     |Device|OK|
     |Device_Data|OK|
     |Plants|Working|
@@ -50,7 +51,7 @@
           "created_at": "25/07/2020 12:05:02",
           "device_id": "T35T3"
         }
-	}
+	  }
   ]
   ```
 - POST (/api/devices)
