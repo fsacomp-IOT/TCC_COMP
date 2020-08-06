@@ -79,5 +79,22 @@
 	true
 	```
   	
-- PUT (/api/devices/{Device_ID})
-- DELETE (/api/devices/{Device_ID})
+- **PUT (/api/devices/{Device_ID})**
+
+	Request:
+	```
+	{
+	    "name": "Jardinagem"
+	}
+	```
+	
+	Response (200):
+	```
+	true
+	```
+	
+- **DELETE (/api/devices/{Device_ID})**
+
+	```
+	true
+	```
