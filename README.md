@@ -13,6 +13,7 @@
 ### Device
 
 - **GET (/api/devices/{Device_ID})**
+
 	Response:
 	```
 	{
@@ -33,6 +34,7 @@
 	}
 	```
 - **GET ALL (/api/devices)**
+
   Response:
   ```
   [
@@ -51,7 +53,7 @@
           "created_at": "25/07/2020 12:05:02",
           "device_id": "T35T3"
         }
-	  }
+      }
   ]
   ```
 - POST (/api/devices)
