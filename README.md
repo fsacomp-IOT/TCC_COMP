@@ -5,7 +5,7 @@
 | Atividade | Status |
 | - | - |
 | Device | OK |
-| Device_Data | OK |
+| Device Data | OK |
 | Plants | Working |
 
 ## Rotas
@@ -95,6 +95,44 @@
 	
 - **DELETE (/api/devices/{Device_ID})**
 
+	Response (200):
+	```
+	true
+	```
+
+### Device Data
+
+- **GET (/api/devicedata/{Device_ID})**
+
+	Response (200):
+	```
+	    [
+            {
+                 "id": 8,
+                 "soil_humidity": 5.3,
+                 "air_humidity": 4,
+                 "air_temperature": 35,
+                 "solar_light": 8,
+                 "created_at": "31/07/2020 19:24:56",
+                 "device_id": "T35T7"
+             }
+        ]
+	```
+	
+- **POST (/api/devicedata/)**
+
+	Request:
+	```
+	{
+	    "device_id": "T35T4",
+	    "soil_humidity": 1.7,
+	    "air_humidity": 3.0,
+	    "air_temperature": 26.5,
+	    "solar_light": 30.0
+	}
+	```
+	
+	Response (200):
 	```
 	true
 	```
