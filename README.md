@@ -2,11 +2,11 @@
 
 ## Dashboard
 
-    |Atividade|Status|
-    |-|-|
-    |Device|OK|
-    |Device_Data|OK|
-    |Plants|Working|
+| Atividade | Status |
+| - | - |
+| Device | OK |
+| Device_Data | OK |
+| Plants | Working |
 
 ## Rotas
 
