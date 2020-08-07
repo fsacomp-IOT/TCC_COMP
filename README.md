@@ -119,7 +119,7 @@
         ]
 	```
 	
-- **POST (/api/devicedata/)**
+- **POST (/api/devicedata)**
 
 	Request:
 	```
