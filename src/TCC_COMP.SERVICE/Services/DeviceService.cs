@@ -23,13 +23,13 @@
             _mapper = mapper;
         }
 
-        public async Task<List<DeviceViewModel>> ObterTodosDevices()
+        public async Task<List<Device>> ObterTodosDevices()
         {
-            var retorno = _mapper.Map<List<DeviceViewModel>>(await _deviceRepository.ObterTodos());
+            var retorno = _mapper.Map<List<Device>>(await _deviceRepository.ObterTodos());
 
             foreach(var ret in retorno)
             {
-                ret.deviceData = _mapper.Map<DeviceDataViewModel>(await _dataRepository.ObterUltimoRegistro(ret.id));
+                ret.deviceData = _mapper.Map<DeviceData>(await _dataRepository.ObterUltimoRegistro(ret.id));
 
                 if (ret.deviceData != null)
                 {
@@ -53,15 +53,15 @@
             }
             else
             {
-                return new List<DeviceViewModel>();
+                return new List<Device>();
             }
         }
 
-        public async Task<DeviceViewModel> ObterDevicePorId(string device_id)
+        public async Task<Device> ObterDevicePorId(string device_id)
         {
-            DeviceViewModel retorno = _mapper.Map<DeviceViewModel>(await _deviceRepository.ObterPorId(device_id));
+            Device retorno = _mapper.Map<Device>(await _deviceRepository.ObterPorId(device_id));
 
-            retorno.deviceData = _mapper.Map<DeviceDataViewModel>(await _dataRepository.ObterUltimoRegistro(device_id));
+            retorno.deviceData = _mapper.Map<DeviceData>(await _dataRepository.ObterUltimoRegistro(device_id));
 
             TimeSpan interval = DateTime.Now - Convert.ToDateTime(retorno.deviceData.created_at);
 
@@ -84,7 +84,7 @@
             }
         }
 
-        public async Task<bool> AdicionarDevice(DeviceViewModel newDevice)
+        public async Task<bool> AdicionarDevice(Device newDevice)
         {
             newDevice.updated_at = newDevice.created_at;
 
@@ -98,18 +98,18 @@
             if (newDevice.deviceData != null && retorno != false)
             {
                 newDevice.deviceData.device_id = newDevice.id;
-                newDevice.deviceData.created_at = DateTime.Now.ToString();
+                newDevice.deviceData.created_at = DateTime.Now;
                 retorno = await _dataRepository.Adicionar(_mapper.Map<DeviceData>(newDevice.deviceData));
             }
 
             return retorno;
         }
 
-        public async Task<bool> AtualizarDevice(string device_id, DeviceViewModel alteracaoDevice)
+        public async Task<bool> AtualizarDevice(Device alteracaoDevice)
         {
-            alteracaoDevice.updated_at = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            alteracaoDevice.updated_at = DateTime.Now;
 
-            return await _deviceRepository.Atualizar(device_id, _mapper.Map<Device>(alteracaoDevice));
+            return await _deviceRepository.Atualizar(_mapper.Map<Device>(alteracaoDevice));
         }
 
         public async Task<bool> DeletarDevice(string device_id)

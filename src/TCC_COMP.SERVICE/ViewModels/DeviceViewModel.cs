@@ -30,6 +30,8 @@
 
         #region Relation
 
+        public string plant_id { get; set; }
+
         public DeviceDataViewModel deviceData { get; set; }
 
         #endregion

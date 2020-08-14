@@ -10,6 +10,7 @@
         {
             CreateMap<DeviceViewModel, Device>().ReverseMap();
             CreateMap<DeviceDataViewModel, DeviceData>().ReverseMap();
+            CreateMap<PlantViewModel, Plant>().ReverseMap();
         }
     }
 }

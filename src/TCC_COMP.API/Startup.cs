@@ -29,6 +29,10 @@ namespace TCC_COMP.API
         {
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             services.ResolveDependencies();
         }
 

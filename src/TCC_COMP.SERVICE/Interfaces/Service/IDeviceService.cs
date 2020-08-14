@@ -3,14 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using TCC_COMP.SERVICE.ViewModels;
+    using TCC_COMP.DOMAIN.Entities;
 
     public interface IDeviceService
     {
-        Task<List<DeviceViewModel>> ObterTodosDevices();
-        Task<DeviceViewModel> ObterDevicePorId(string device_id);
-        Task<bool> AdicionarDevice(DeviceViewModel newDevice);
-        Task<bool> AtualizarDevice(string device_id, DeviceViewModel updatedDevice);
+        Task<List<Device>> ObterTodosDevices();
+        Task<Device> ObterDevicePorId(string device_id);
+        Task<bool> AdicionarDevice(Device newDevice);
+        Task<bool> AtualizarDevice(Device updatedDevice);
         Task<bool> DeletarDevice(string device_id);
     }
 }

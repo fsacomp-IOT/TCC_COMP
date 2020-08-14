@@ -27,6 +27,8 @@
 
         #region Relations
 
+        public string plant_id { get; set; }
+
         public DeviceData deviceData { get; set; }
 
         #endregion
