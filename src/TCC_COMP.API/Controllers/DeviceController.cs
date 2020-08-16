@@ -56,7 +56,7 @@
         {
             try
             {
-                var retorno = await _deviceRepository.ObterPorId(device_id);
+                var retorno = await _deviceService.ObterPorId(device_id);
                 return CustomResponse(retorno);
             }
             catch (Exception ex)
