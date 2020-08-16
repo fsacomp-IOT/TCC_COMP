@@ -5,7 +5,7 @@
 
     public class DeviceViewModel
     {
-        #region Controller
+        #region Construtor
 
         public DeviceViewModel()
         {

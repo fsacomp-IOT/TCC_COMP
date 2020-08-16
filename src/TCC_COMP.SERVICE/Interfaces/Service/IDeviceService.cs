@@ -7,8 +7,8 @@
 
     public interface IDeviceService
     {
-        Task<List<Device>> ObterTodosDevices();
-        Task<Device> ObterDevicePorId(string device_id);
+        Task<List<Device>> ObterTodos();
+        Task<Device> ObterPorId(string device_id);
         Task<bool> AdicionarDevice(Device newDevice);
         Task<bool> AtualizarDevice(Device updatedDevice);
         Task<bool> DeletarDevice(string device_id);

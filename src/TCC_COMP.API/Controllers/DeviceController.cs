@@ -41,7 +41,7 @@
         {
             try
             {
-                var retorno = await _deviceRepository.ObterTodos();
+                var retorno = await _deviceService.ObterTodos();
                 return CustomResponse(retorno);
             }
             catch (Exception ex)

@@ -23,7 +23,7 @@
             _mapper = mapper;
         }
 
-        public async Task<List<Device>> ObterTodosDevices()
+        public async Task<List<Device>> ObterTodos()
         {
             var retorno = _mapper.Map<List<Device>>(await _deviceRepository.ObterTodos());
 
@@ -57,7 +57,7 @@
             }
         }
 
-        public async Task<Device> ObterDevicePorId(string device_id)
+        public async Task<Device> ObterPorId(string device_id)
         {
             Device retorno = _mapper.Map<Device>(await _deviceRepository.ObterPorId(device_id));
 
