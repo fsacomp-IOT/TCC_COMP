@@ -145,7 +145,7 @@
                 updateDevice.id
             });
 
-            command = "UPDATE \"TCC_COMP\".\"Device\" SET name = @name, updated_at = @updated_at WHERE id = @device_id";
+            command = "UPDATE \"TCC_COMP\".\"Device\" SET name = @name, updated_at = @updated_at WHERE id = @id";
 
             using (var connection = new NpgsqlConnection(this.ConnectionString))
             {
