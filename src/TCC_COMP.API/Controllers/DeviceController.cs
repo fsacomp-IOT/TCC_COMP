@@ -41,7 +41,7 @@
         {
             try
             {
-                var retorno = await _deviceService.ObterTodos();
+                var retorno = _mapper.Map<List<DeviceViewModel>>(await _deviceService.ObterTodos());
                 return CustomResponse(retorno);
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@
         {
             try
             {
-                var retorno = await _deviceService.ObterPorId(device_id);
+                var retorno = _mapper.Map<DeviceViewModel>(await _deviceService.ObterPorId(device_id));
                 return CustomResponse(retorno);
             }
             catch (Exception ex)
@@ -106,7 +106,6 @@
         [HttpDelete("{device_id}")]
         public async Task<ActionResult<string>> DeletarDevice(string device_id)
         {
-
             try
             {
                 var retorno = await _deviceService.DeletarDevice(device_id);

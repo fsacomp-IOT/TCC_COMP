@@ -20,6 +20,8 @@
 
         private string command = string.Empty;
 
+        #region [SELECT]
+
         public async Task<List<Plant>> ObterTodosDetalhado()
         {
             command = "SELECT id, air_humidity, air_temperature, name, soil_humidity, solar_light FROM \"TCC_COMP\".\"Plants\"";
@@ -97,6 +99,10 @@
             }
         }
 
+        #endregion
+
+        #region [INSERT]
+
         public async Task<bool> InserirPlanta(Plant plant)
         {
             DynamicParameters dynamicParameters = new DynamicParameters(new
@@ -122,7 +128,7 @@
                     {
                         var retornoInsert = await connection.ExecuteAsync(command, dynamicParameters, trans);
 
-                        trans.Commit();
+                        await trans.CommitAsync();
 
                         if (retornoInsert != 0)
                         {
@@ -143,6 +149,10 @@
                 }
             }
         }
+
+        #endregion
+
+        #region [UPDATE]
 
         public async Task<bool> AtualizarPlanta(Plant plant)
         {
@@ -165,12 +175,12 @@
                 try
                 {
                     await connection.OpenAsync();
-                    
+
                     using (var trans = connection.BeginTransaction())
                     {
                         var retornoUpdate = await connection.ExecuteAsync(command, dynamicParameters, trans);
 
-                        trans.Commit();
+                        await trans.CommitAsync();
 
                         if (retornoUpdate != 0)
                         {
@@ -190,6 +200,10 @@
                 }
             }
         }
+
+        #endregion
+
+        #region [DELETE]
 
         public async Task<bool> RemoverPlanta(int id)
         {
@@ -205,9 +219,9 @@
 
                     using (var trans = connection.BeginTransaction())
                     {
-                        var retornoUpdate = await connection.ExecuteAsync(command, new { id = id}, trans);
+                        var retornoUpdate = await connection.ExecuteAsync(command, new { id = id }, trans);
 
-                        trans.Commit();
+                        await trans.CommitAsync();
 
                         if (retornoUpdate != 0)
                         {
@@ -227,5 +241,8 @@
                 }
             }
         }
+
+        #endregion
+
     }
 }

@@ -20,6 +20,8 @@ namespace TCC_COMP.INFRA.DATA.Repository
         {
         }
 
+        #region [SELECT]
+
         public async Task<List<DeviceData>> ObterUltimos24Registros(string device_id)
         {
             command = "SELECT * FROM \"TCC_COMP\".\"Device_Data\" WHERE device_id = @device_id ORDER BY id DESC FETCH FIRST 24 ROWS ONLY";
@@ -29,7 +31,7 @@ namespace TCC_COMP.INFRA.DATA.Repository
                 try
                 {
                     await connection.OpenAsync();
-                    
+
                     var retorno = await connection.QueryAsync<DeviceData>(command, new { device_id = device_id });
 
                     return retorno.ToList();
@@ -54,7 +56,7 @@ namespace TCC_COMP.INFRA.DATA.Repository
                 try
                 {
                     await connection.OpenAsync();
-                    
+
                     var retorno = await connection.QueryAsync<DeviceData>(command, new { device_id = device_id });
 
                     return retorno.FirstOrDefault();
@@ -69,6 +71,10 @@ namespace TCC_COMP.INFRA.DATA.Repository
                 }
             }
         }
+
+        #endregion
+
+        #region [INSERT]
 
         public async Task<bool> Adicionar(DeviceData newDeviceData)
         {
@@ -96,7 +102,7 @@ namespace TCC_COMP.INFRA.DATA.Repository
 
                         var retorno = await connection.ExecuteAsync(command, dynamicParameters);
 
-                        trans.Commit();
+                        await trans.CommitAsync();
 
                         if (retorno != 0)
                         {
@@ -116,5 +122,8 @@ namespace TCC_COMP.INFRA.DATA.Repository
                 }
             }
         }
+
+        #endregion
+
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using TCC_COMP.API.Configurations;
+using TCC_COMP.DOMAIN.Entities;
 
 namespace TCC_COMP.API
 {
@@ -33,6 +34,7 @@ namespace TCC_COMP.API
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.Configure<Keys>(Configuration.GetSection("Keys"));
             services.ResolveDependencies();
         }
 

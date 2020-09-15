@@ -10,6 +10,7 @@
         public DeviceViewModel()
         {
             created_at = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            deviceData = new DeviceDataViewModel();
         }
 
         #endregion

@@ -27,13 +27,16 @@
         {
         }
 
+        #region [SELECT]
+
         /// <summary>
         /// Método para obter todos os Devices ativos.
         /// </summary>
         /// <returns>List<Device></Device>.</returns>
         public async Task<List<Device>> ObterTodos()
         {
-            command = "SELECT * FROM \"TCC_COMP\".\"Device\"";
+            command = "SELECT Device.id, Device.name, Device.created_at, Device.updated_at, Relacao.plant_id FROM \"TCC_COMP\".\"Device\" AS Device " +
+                      "INNER JOIN \"TCC_COMP\".\"DevicePlants\" AS Relacao ON Relacao.device_id = Device.id";
 
             using (var connection = new NpgsqlConnection(this.ConnectionString))
             {
@@ -84,6 +87,10 @@
             }
         }
 
+        #endregion
+
+        #region [INSERT]
+
         /// <summary>
         /// Query para inserção de novos Devices.
         /// </summary>
@@ -116,7 +123,7 @@
 
                         if (retornoQuery != 0)
                         {
-                            trans.Commit();
+                            await trans.CommitAsync();
                             retorno = true;
                         }
                     }
@@ -133,6 +140,54 @@
                 }
             }
         }
+
+        public async Task<bool> IncluirRelacaoPlanta(string device_id, string plant)
+        {
+            bool retorno = false;
+
+            int plant_id = Convert.ToInt32(plant);
+
+            DynamicParameters dynamicParameters = new DynamicParameters(new { 
+                device_id,
+                plant_id
+            });
+
+            command = "INSERT INTO \"TCC_COMP\".\"DevicePlants\"(device_id, plant_id) VALUES (@device_id, @plant_id)";
+
+            using (var connection = new NpgsqlConnection(this.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+
+                    using (var trans = connection.BeginTransaction())
+                    {
+                        var retornoQuery = await connection.ExecuteAsync(command, dynamicParameters);
+
+                        if (retornoQuery != 0)
+                        {
+                            await trans.CommitAsync();
+                            retorno = true;
+                        }
+                    }
+
+                }
+                catch(TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+
+            return retorno;
+        }
+
+        #endregion
+
+        #region [UPDATE]
 
         public async Task<bool> Atualizar(Device updateDevice)
         {
@@ -157,7 +212,7 @@
                     {
                         var retornoQuery = await connection.ExecuteAsync(this.command, dynamicParamenters);
 
-                        trans.Commit();
+                        await trans.CommitAsync();
 
                         retorno = true;
                     }
@@ -174,6 +229,53 @@
                 }
             }
         }
+
+        public async Task<bool> AtualizarRelacaoPlanta(string device_id, int plant_id)
+        {
+            bool retorno = false;
+
+            DynamicParameters dynamicParameters = new DynamicParameters(new { 
+                device_id, 
+                plant_id
+            });
+
+            command = "UPDATE \"TCC_COMP\".\"DevicePlants\" SET plant_id = @plant_id WHERE device_id = @device_id";
+
+            using (var connection = new NpgsqlConnection(this.ConnectionString)) 
+            {
+                try
+                {
+                    await connection.OpenAsync();
+
+                    using (var trans = await connection.BeginTransactionAsync())
+                    {
+                        var retornoQuery = await connection.ExecuteAsync(command, dynamicParameters);
+
+                        if(retornoQuery != 0)
+                        {
+                            await trans.CommitAsync();
+
+                            retorno = true;
+                        }
+
+                    }
+                }
+                catch (TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+
+            return retorno;
+        }
+
+        #endregion
+
+        #region [DELETE]
 
         public async Task<bool> Deletar(string device_id)
         {
@@ -193,11 +295,8 @@
 
                         retorno = true;
 
-                        trans.Commit();
+                        await trans.CommitAsync();
                     }
-
-                    return retorno;
-
                 }
                 catch (TimeoutException ex)
                 {
@@ -208,6 +307,10 @@
                     throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
                 }
             }
+
+            return retorno;
         }
+
+        #endregion
     }
 }

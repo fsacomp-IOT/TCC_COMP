@@ -33,7 +33,7 @@ namespace TCC_COMP.API.Controllers
         {
             try
             {
-                var retorno = await _dataRepository.ObterUltimos24Registros(device_id);
+                var retorno = _mapper.Map<DeviceDataViewModel>(await _dataRepository.ObterUltimos24Registros(device_id));
                 return CustomResponse(_mapper.Map<List<DeviceDataViewModel>>(retorno));
             }
             catch (Exception ex)

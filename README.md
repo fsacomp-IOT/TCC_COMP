@@ -6,7 +6,8 @@
 | - | - |
 | Device | OK |
 | Device Data | OK |
-| Plants | Working |
+| Plants | OK |
+| Swagger | Working |
 
 ## Rotas
 

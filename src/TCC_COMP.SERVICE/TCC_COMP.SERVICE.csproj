@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TCC_COMP.DOMAIN\TCC_COMP.DOMAIN.csproj" />
+    <ProjectReference Include="..\TCC_COMP.INFRA.CROSSCUTTING\TCC_COMP.INFRA.CROSSCUTTING.csproj" />
   </ItemGroup>
 
   <ItemGroup>
