@@ -35,6 +35,7 @@ namespace TCC_COMP.API
                 options.SuppressModelStateInvalidFilter = true;
             });
             services.Configure<Keys>(Configuration.GetSection("Keys"));
+            services.AddSwaggerGen();
             services.ResolveDependencies();
         }
 
@@ -46,7 +47,16 @@ namespace TCC_COMP.API
                 app.UseDeveloperExceptionPage();
             }
 
-           // app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API TCC_COMP");
+                    c.RoutePrefix = string.Empty;
+                }
+            );
 
             app.UseRouting();
 
