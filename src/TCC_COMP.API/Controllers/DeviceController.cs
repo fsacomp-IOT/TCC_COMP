@@ -84,7 +84,7 @@
             }
         }
 
-        [HttpPost("/incluirRelacao")]
+        [HttpPost("incluirRelacao")]
         public async Task<ActionResult<DeviceViewModel>> IncluirRelacaoPlanta(DeviceViewModel includeRelation)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
