@@ -35,8 +35,7 @@
         /// <returns>List<Device></Device>.</returns>
         public async Task<List<Device>> ObterTodos()
         {
-            command = "SELECT Device.id, Device.name, Device.created_at, Device.updated_at, Relacao.plant_id FROM \"TCC_COMP\".\"Device\" AS Device " +
-                      "INNER JOIN \"TCC_COMP\".\"DevicePlants\" AS Relacao ON Relacao.device_id = Device.id";
+            command = "SELECT Device.id, Device.name, Device.created_at, Device.updated_at FROM \"TCC_COMP\".\"Device\" AS Device ";
 
             using (var connection = new NpgsqlConnection(this.ConnectionString))
             {
@@ -49,6 +48,31 @@
                     return retorno.ToList();
 
                 }
+                catch (TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+        }
+
+        public async Task<string> ObterRelacaoPlanta(string device_id)
+        {
+            command = "SELECT Relacao.plant_id FROM \"TCC_COMP\".\"DevicePlants\" AS Relacao WHERE device_id = @device_id";
+
+            using(var connection = new NpgsqlConnection(this.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+
+                    var retorno = await connection.QueryAsync<string>(this.command, new { device_id = device_id});
+
+                    return retorno.FirstOrDefault();
+            }
                 catch (TimeoutException ex)
                 {
                     throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);

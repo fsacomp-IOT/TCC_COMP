@@ -33,6 +33,11 @@
         {
             var retorno = _mapper.Map<List<Device>>(await _deviceRepository.ObterTodos());
 
+            foreach(var d in retorno)
+            {
+                d.plant_id = await _deviceRepository.ObterRelacaoPlanta(d.id);
+            }
+
             foreach(var ret in retorno)
             {
                 ret.deviceData = _mapper.Map<DeviceData>(await _dataRepository.ObterUltimoRegistro(ret.id));
@@ -120,6 +125,18 @@
 
             if (!string.IsNullOrEmpty(newDevice.plant_id))
                 retorno = await _deviceRepository.IncluirRelacaoPlanta(newDevice.id, newDevice.plant_id);
+
+            return retorno;
+        }
+
+        public async Task<bool> AdicionarRelacaoPlantaDevice(Device includeRelation)
+        {
+            bool retorno = false;
+
+            if(!string.IsNullOrEmpty(includeRelation.id) && !string.IsNullOrEmpty(includeRelation.plant_id))
+            {
+                retorno = await _deviceRepository.IncluirRelacaoPlanta(includeRelation.id, includeRelation.plant_id);
+            }
 
             return retorno;
         }

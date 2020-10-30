@@ -16,6 +16,7 @@
     {
         private readonly IDeviceService _deviceService;
         private readonly IDeviceRepository _deviceRepository;
+        private readonly ITelegramRepository _telegramRepository;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -76,6 +77,24 @@
                 var retorno = await _deviceService.AdicionarDevice(_mapper.Map<Device>(newDevice));
 
                 return CustomResponse(newDevice);
+            }
+            catch (Exception ex)
+            {
+                NotificarErro(ex.Message);
+                return CustomResponse(ex.Message);
+            }
+        }
+
+        [HttpPost("/incluirRelacao")]
+        public async Task<ActionResult<DeviceViewModel>> IncluirRelacaoPlanta(DeviceViewModel includeRelation)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            try
+            {
+                var retorno = await _deviceService.AdicionarRelacaoPlantaDevice(_mapper.Map<Device>(includeRelation));
+
+                return CustomResponse(includeRelation);
             }
             catch (Exception ex)
             {

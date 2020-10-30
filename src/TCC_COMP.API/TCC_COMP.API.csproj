@@ -20,5 +20,7 @@
     <ProjectReference Include="..\TCC_COMP.SERVICE\TCC_COMP.SERVICE.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="http://json.schemastore.org/apibuilder.json" /></VisualStudio></ProjectExtensions>
+
 
 </Project>
