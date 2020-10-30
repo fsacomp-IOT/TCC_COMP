@@ -41,16 +41,22 @@
                 {
                     TimeSpan interval = DateTime.Now - Convert.ToDateTime(ret.deviceData.created_at);
 
-                    if (interval.Hours <= Convert.ToInt32(_appSettings.Value.IntervaloConnected))
+                    if (interval.TotalDays < 1)
                     {
-                        ret.connected = "Conectado";
+                        if (interval.Hours <= Convert.ToInt32(_appSettings.Value.IntervaloConnected))
+                        {
+                            ret.connected = "Conectado";
+                        }
+                        else
+                        {
+                            ret.connected = "Desconectado";
+                        }
                     }
                     else
                     {
                         ret.connected = "Desconectado";
                     }
                 }
-                
             }
 
             if (retorno.Count != 0)
@@ -96,6 +102,7 @@
         public async Task<bool> AdicionarDevice(Device newDevice)
         {
             newDevice.updated_at = newDevice.created_at;
+            newDevice.name = "Novo Jardim";
 
             bool retorno = true;
 
