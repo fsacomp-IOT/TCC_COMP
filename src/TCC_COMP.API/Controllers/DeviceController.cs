@@ -16,7 +16,6 @@
     {
         private readonly IDeviceService _deviceService;
         private readonly IDeviceRepository _deviceRepository;
-        private readonly ITelegramRepository _telegramRepository;
         private readonly IMapper _mapper;
 
         /// <summary>
