@@ -17,6 +17,7 @@ namespace TCC_COMP.API.Configurations
             services.AddScoped<IDeviceRepository, DeviceRepository>();
             services.AddScoped<IDeviceDataRepository, DeviceDataRepository>();
             services.AddScoped<IPlantRepository, PlantRepository>();
+            services.AddScoped<ITelegramRepository, TelegramRepository>();
 
             #endregion
 

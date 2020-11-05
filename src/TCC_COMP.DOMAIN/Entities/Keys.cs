@@ -7,5 +7,6 @@ namespace TCC_COMP.DOMAIN.Entities
     public class Keys
     {
         public string IntervaloConnected { get; set; }
+        public string BOT_API { get; set; }
     }
 }

@@ -9,22 +9,29 @@
     using TCC_COMP.SERVICE.Interfaces.Repository;
     using TCC_COMP.SERVICE.Interfaces.Service;
     using TCC_COMP.SERVICE.ViewModels;
+    using TCC_COMP.DOMAIN.Telegram;
 
     public class DeviceService : IDeviceService
     {
 
         private readonly IDeviceRepository _deviceRepository;
         private readonly IDeviceDataRepository _dataRepository;
+        private readonly IPlantRepository _plantRepository;
+        private readonly ITelegramRepository _telegramRepository;
         private readonly IMapper _mapper;
         private readonly IOptions<Keys> _appSettings;
 
         public DeviceService(IDeviceRepository deviceRepository,
                              IMapper mapper,
                              IDeviceDataRepository dataRepository,
+                             IPlantRepository plantRepository,
+                             ITelegramRepository telegramRepository,
                              IOptions<Keys> appSettings)
         {
             _deviceRepository = deviceRepository;
             _dataRepository = dataRepository;
+            _plantRepository = plantRepository;
+            _telegramRepository = telegramRepository;
             _mapper = mapper;
             _appSettings = appSettings;
         }
@@ -121,6 +128,40 @@
                 newDevice.deviceData.device_id = newDevice.id;
                 newDevice.deviceData.created_at = DateTime.Now;
                 retorno = await _dataRepository.Adicionar(_mapper.Map<DeviceData>(newDevice.deviceData));
+
+                if(retorno == true)
+                {
+                    string plant_id = await _deviceRepository.ObterRelacaoPlanta(newDevice.id);
+
+                    if (!string.IsNullOrEmpty(plant_id))
+                    {
+                        Plant dadosPlanta = await _plantRepository.ObterPlanta(Convert.ToInt32(plant_id));
+
+                        NewMessage mensagem = new NewMessage();
+
+                        if (newDevice.deviceData.air_humidity > dadosPlanta.air_humidity) mensagem.text += "Humidade do ar acima do indicado. \n";
+                        if (newDevice.deviceData.air_humidity < dadosPlanta.air_humidity) mensagem.text += "Humidade do ar abaixo do indicado. \n";
+
+                        if (newDevice.deviceData.air_temperature > dadosPlanta.air_temperature) mensagem.text += "Temperatura do ar acima do indicado. \n";
+                        if (newDevice.deviceData.air_temperature < dadosPlanta.air_temperature) mensagem.text += "Temperatura do ar abaixo do indicado. \n";
+
+                        if (newDevice.deviceData.soil_humidity > dadosPlanta.soil_humidity) mensagem.text += "Humidade do solo acima do indicado. \n";
+                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity) mensagem.text += "Humidade do solo abaixo do indicado. \n";
+
+                        if (newDevice.deviceData.solar_light > dadosPlanta.solar_light) mensagem.text += "Luminosidade acima do indicado. \n";
+                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity) mensagem.text += "Luminosidade abaixo do indicado. \n";
+
+                        if (!string.IsNullOrEmpty(mensagem.text))
+                        {
+                            mensagem.chat_id = await _telegramRepository.getChatId(newDevice.id);
+                            if (!string.IsNullOrEmpty(mensagem.chat_id.ToString()))
+                            {
+                                await _telegramRepository.sendMessageAsync(mensagem);
+                            }
+                        }
+                    }
+                }
+
             }
 
             if (!string.IsNullOrEmpty(newDevice.plant_id))
