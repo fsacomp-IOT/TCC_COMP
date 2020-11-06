@@ -258,6 +258,8 @@
         {
             bool retorno = false;
 
+            int planta = Convert.ToInt32(plant_id);
+
             DynamicParameters dynamicParameters = new DynamicParameters(new { 
                 device_id, 
                 plant_id
