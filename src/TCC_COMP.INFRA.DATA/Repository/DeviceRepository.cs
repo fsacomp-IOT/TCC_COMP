@@ -254,7 +254,7 @@
             }
         }
 
-        public async Task<bool> AtualizarRelacaoPlanta(string device_id, int plant_id)
+        public async Task<bool> AtualizarRelacaoPlanta(string device_id, string plant_id)
         {
             bool retorno = false;
 

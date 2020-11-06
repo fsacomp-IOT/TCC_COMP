@@ -206,7 +206,7 @@
 
             var retorno = await _deviceRepository.Atualizar(_mapper.Map<Device>(alteracaoDevice));
 
-            if (!string.IsNullOrEmpty(alteracaoDevice.plant_id)) retorno = await _deviceRepository.AtualizarRelacaoPlanta(alteracaoDevice.id, Convert.ToInt32(alteracaoDevice.plant_id));
+            if (!string.IsNullOrEmpty(alteracaoDevice.plant_id)) retorno = await _deviceRepository.AtualizarRelacaoPlanta(alteracaoDevice.id, alteracaoDevice.plant_id);
 
             return retorno;
         }
