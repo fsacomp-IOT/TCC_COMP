@@ -110,7 +110,8 @@
             }
             else
             {
-                return null;
+                retorno.connected = "Desconectado";
+                return retorno;
             }
         }
 
@@ -184,6 +185,7 @@
                 if (string.IsNullOrEmpty(plant_id))
                 {
                     var ret = await _deviceRepository.IncluirRelacaoPlanta(includeRelation.id, includeRelation.plant_id);
+                    retorno = ret.ToString();
                 }
                 else if(includeRelation.plant_id != plant_id)
                 {
