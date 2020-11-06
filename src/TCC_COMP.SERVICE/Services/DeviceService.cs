@@ -103,6 +103,10 @@
                     retorno.connected = "Desconectado";
                 }
             }
+            else
+            {
+                retorno.connected = "Desconectado";
+            }
 
             if (retorno != null)
             {
