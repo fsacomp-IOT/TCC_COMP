@@ -93,6 +93,12 @@
             {
                 var retorno = await _deviceService.AdicionarRelacaoPlantaDevice(_mapper.Map<Device>(includeRelation));
 
+                if (retorno.ToUpper() != "TRUE" && retorno.ToUpper() != "FALSE")
+                {
+                    NotificarErro(retorno);
+                    return CustomResponse(retorno);
+                }
+
                 return CustomResponse(includeRelation);
             }
             catch (Exception ex)
