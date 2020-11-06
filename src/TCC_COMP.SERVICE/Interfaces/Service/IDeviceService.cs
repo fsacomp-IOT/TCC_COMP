@@ -10,7 +10,7 @@
         Task<List<Device>> ObterTodos();
         Task<Device> ObterPorId(string device_id);
         Task<bool> AdicionarDevice(Device newDevice);
-        Task<bool> AdicionarRelacaoPlantaDevice(Device incluirRelacao);
+        Task<string> AdicionarRelacaoPlantaDevice(Device incluirRelacao);
         Task<bool> AtualizarDevice(Device updatedDevice);
         Task<bool> DeletarDevice(string device_id);
     }

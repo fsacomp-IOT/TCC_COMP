@@ -13,6 +13,6 @@
         Task<bool> Deletar(string device_id);
         Task<bool> IncluirRelacaoPlanta(string device_id, string plant_id);
         Task<string> ObterRelacaoPlanta(string device_id);
-        Task<bool> AtualizarRelacaoPlanta(string device_id, int plant_id);
+        Task<bool> AtualizarRelacaoPlanta(string device_id, string plant_id);
     }
 }

@@ -92,13 +92,16 @@
             if(retorno.deviceData != null)
                  interval = DateTime.Now - Convert.ToDateTime(retorno.deviceData.created_at);
 
-            if(interval.Hours <= Convert.ToInt32(_appSettings.Value.IntervaloConnected))
+            if(interval.TotalDays < 1)
             {
-                retorno.connected = "Conectado";
-            }
-            else
-            {
-                retorno.connected = "Desconectado";
+                if (interval.Hours <= Convert.ToInt32(_appSettings.Value.IntervaloConnected))
+                {
+                    retorno.connected = "Conectado";
+                }
+                else
+                {
+                    retorno.connected = "Desconectado";
+                }
             }
 
             if (retorno != null)
@@ -170,13 +173,28 @@
             return retorno;
         }
 
-        public async Task<bool> AdicionarRelacaoPlantaDevice(Device includeRelation)
+        public async Task<string> AdicionarRelacaoPlantaDevice(Device includeRelation)
         {
-            bool retorno = false;
+            string retorno = string.Empty;
 
             if(!string.IsNullOrEmpty(includeRelation.id) && !string.IsNullOrEmpty(includeRelation.plant_id))
             {
-                retorno = await _deviceRepository.IncluirRelacaoPlanta(includeRelation.id, includeRelation.plant_id);
+                string plant_id = await _deviceRepository.ObterRelacaoPlanta(includeRelation.id);
+
+                if (string.IsNullOrEmpty(plant_id))
+                {
+                    var ret = await _deviceRepository.IncluirRelacaoPlanta(includeRelation.id, includeRelation.plant_id);
+                }
+                else if(includeRelation.plant_id != plant_id)
+                {
+                    var ret = await _deviceRepository.AtualizarRelacaoPlanta(includeRelation.id, includeRelation.plant_id);
+                    retorno = ret.ToString();
+                }
+                else
+                {
+                    retorno = "Esse device já está atrelado a este tipo de planta";
+                }
+                
             }
 
             return retorno;
