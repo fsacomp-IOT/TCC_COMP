@@ -254,11 +254,11 @@
             }
         }
 
-        public async Task<bool> AtualizarRelacaoPlanta(string device_id, string plant_id)
+        public async Task<bool> AtualizarRelacaoPlanta(string device_id, string plant)
         {
             bool retorno = false;
 
-            int planta = Convert.ToInt32(plant_id);
+            int plant_id = Convert.ToInt32(plant);
 
             DynamicParameters dynamicParameters = new DynamicParameters(new { 
                 device_id, 
