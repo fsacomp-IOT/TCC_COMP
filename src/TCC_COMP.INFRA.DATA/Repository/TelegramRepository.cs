@@ -58,7 +58,10 @@
                 {
                     await conn.OpenAsync();
                     var ret = await conn.QueryAsync<int>(command, new { device_id });
-                    return ret.First();
+                    if (ret.Count() > 0)
+                        return ret.First();
+                    else
+                        return 0;
                 }
                 catch (TimeoutException ex)
                 {

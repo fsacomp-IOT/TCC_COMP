@@ -147,22 +147,22 @@
 
                         NewMessage mensagem = new NewMessage();
 
-                        if (newDevice.deviceData.air_humidity > dadosPlanta.air_humidity) mensagem.text += "Humidade do ar acima do indicado. \n";
-                        if (newDevice.deviceData.air_humidity < dadosPlanta.air_humidity) mensagem.text += "Humidade do ar abaixo do indicado. \n";
+                        if (newDevice.deviceData.air_humidity > dadosPlanta.air_humidity + 2) mensagem.text += "Humidade do ar acima do indicado. \n";
+                        if (newDevice.deviceData.air_humidity < dadosPlanta.air_humidity - 2) mensagem.text += "Humidade do ar abaixo do indicado. \n";
 
-                        if (newDevice.deviceData.air_temperature > dadosPlanta.air_temperature) mensagem.text += "Temperatura do ar acima do indicado. \n";
-                        if (newDevice.deviceData.air_temperature < dadosPlanta.air_temperature) mensagem.text += "Temperatura do ar abaixo do indicado. \n";
+                        if (newDevice.deviceData.air_temperature > dadosPlanta.air_temperature + 2) mensagem.text += "Temperatura do ar acima do indicado. \n";
+                        if (newDevice.deviceData.air_temperature < dadosPlanta.air_temperature - 2) mensagem.text += "Temperatura do ar abaixo do indicado. \n";
 
-                        if (newDevice.deviceData.soil_humidity > dadosPlanta.soil_humidity) mensagem.text += "Humidade do solo acima do indicado. \n";
-                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity) mensagem.text += "Humidade do solo abaixo do indicado. \n";
+                        if (newDevice.deviceData.soil_humidity > dadosPlanta.soil_humidity + 2) mensagem.text += "Humidade do solo acima do indicado. \n";
+                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity - 2) mensagem.text += "Humidade do solo abaixo do indicado. \n";
 
-                        if (newDevice.deviceData.solar_light > dadosPlanta.solar_light) mensagem.text += "Luminosidade acima do indicado. \n";
-                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity) mensagem.text += "Luminosidade abaixo do indicado. \n";
+                        if (newDevice.deviceData.solar_light > dadosPlanta.solar_light + 2) mensagem.text += "Luminosidade acima do indicado. \n";
+                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity - 2) mensagem.text += "Luminosidade abaixo do indicado. \n";
 
                         if (!string.IsNullOrEmpty(mensagem.text))
                         {
                             mensagem.chat_id = await _telegramRepository.getChatId(newDevice.id);
-                            if (!string.IsNullOrEmpty(mensagem.chat_id.ToString()))
+                            if (mensagem.chat_id > 0 && !string.IsNullOrEmpty(mensagem.chat_id.ToString()))
                             {
                                 await _telegramRepository.sendMessageAsync(mensagem);
                             }
