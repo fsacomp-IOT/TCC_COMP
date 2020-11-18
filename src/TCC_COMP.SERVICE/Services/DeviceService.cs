@@ -219,8 +219,16 @@
 
         public async Task<bool> DeletarDevice(string device_id)
         {
-            var retorno = await _deviceRepository.Deletar(device_id);
+            bool retorno = false;
 
+            var retornoDeleteData = await _dataRepository.Deletar(device_id);
+            var retornoDeleteRelacaoPlanta = await _deviceRepository.DeletarRelacaoPlanta(device_id);
+            var retornoDeleteFlag = await _telegramRepository.DeleteRelation(device_id);
+            var retornoDeleteDevice = await _deviceRepository.Deletar(device_id);
+
+            if (retornoDeleteDevice)
+                retorno = true;
+            
             return retorno;
         }
     }

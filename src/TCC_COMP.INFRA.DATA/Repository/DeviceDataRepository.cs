@@ -125,5 +125,46 @@ namespace TCC_COMP.INFRA.DATA.Repository
 
         #endregion
 
+        #region [DELETE]
+
+        public async Task<bool> Deletar(string device_id)
+        {
+
+            command = "DELETE FROM \"TCC_COMP\".\"Device_Data\" WHERE device_id = @device_id";
+
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+
+                    using (var trans = connection.BeginTransaction())
+                    {
+
+                        var retorno = await connection.ExecuteAsync(command, new { device_id});
+
+                        await trans.CommitAsync();
+
+                        if (retorno != 0)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                }
+                catch (TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+        }
+
+        #endregion
+
     }
 }

@@ -49,7 +49,7 @@
 
         public async Task<int> getChatId(string device_id)
         {
-            string command = "SELECT chat_id FROM \"TCC_COMP\".\"DeviceChat\" where device_id = @device_id";
+            string command = "SELECT chat_id FROM \"TCC_COMP\".\"DeviceChat\" WHERE device_id = @device_id";
 
 
             using (var conn = new NpgsqlConnection(this.ConnectionString))
@@ -74,16 +74,34 @@
             }
 
         }
+
+        public async Task<bool> DeleteRelation(string device_id)
+        {
+            string command = "DELETE FROM \"TCC_COMP\".\"DeviceChat\" WHERE device_id = @device_id";
+
+            bool response = false;
+
+            using (var conn = new NpgsqlConnection(this.ConnectionString))
+            {
+                
+                try
+                {
+                    await conn.OpenAsync();
+                    var ret = await conn.ExecuteAsync(command, new { device_id });
+                    if (ret > 0)
+                        response = true;
+                }
+                catch (TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+
+            return response;
+        }
     }
 }
-
-//{
-//    "id": "T35T3Z567VRT",
-//  "plant_id": "1",
-//  "deviceData": {
-//        "soil_humidity": 6,
-//    "air_humidity": 10,
-//    "air_temperature": 14,
-//    "solar_light": 5
-//  }
-//}

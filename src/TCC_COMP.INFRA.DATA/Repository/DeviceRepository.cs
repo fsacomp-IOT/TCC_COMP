@@ -337,6 +337,44 @@
             return retorno;
         }
 
+        public async Task<bool> DeletarRelacaoPlanta(string device_id)
+        {
+            bool retorno = false;
+
+            command = "DELETE FROM \"TCC_COMP\".\"DevicePlants\" WHERE device_id = @device_id";
+
+            using (var connection = new NpgsqlConnection(this.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+
+                    using (var trans = await connection.BeginTransactionAsync())
+                    {
+                        var retornoQuery = await connection.ExecuteAsync(command, new { device_id });
+
+                        if (retornoQuery != 0)
+                        {
+                            await trans.CommitAsync();
+
+                            retorno = true;
+                        }
+
+                    }
+                }
+                catch (TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+
+            return retorno;
+        }
+
         #endregion
     }
 }

@@ -7,5 +7,6 @@
     {
         Task sendMessageAsync(NewMessage newMessage);
         Task<int> getChatId(string device_id);
+        Task<bool> DeleteRelation(string device_id);
     }
 }
