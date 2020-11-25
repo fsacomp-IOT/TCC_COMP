@@ -156,8 +156,8 @@
                         if (newDevice.deviceData.soil_humidity > dadosPlanta.soil_humidity + 2) mensagem.text += "Humidade do solo acima do indicado. \n";
                         if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity - 2) mensagem.text += "Humidade do solo abaixo do indicado. \n";
 
-                        if (newDevice.deviceData.solar_light > dadosPlanta.solar_light + 2) mensagem.text += "Luminosidade acima do indicado. \n";
-                        if (newDevice.deviceData.soil_humidity < dadosPlanta.soil_humidity - 2) mensagem.text += "Luminosidade abaixo do indicado. \n";
+                        //if (newDevice.deviceData.solar_light > 0) mensagem.text += "Luminosidade acima do indicado. \n";
+                        if (newDevice.deviceData.soil_humidity == 0) mensagem.text += "Luminosidade abaixo do indicado. \n";
 
                         if (!string.IsNullOrEmpty(mensagem.text))
                         {
