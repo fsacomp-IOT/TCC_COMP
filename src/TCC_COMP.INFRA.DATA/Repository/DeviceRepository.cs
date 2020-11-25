@@ -86,6 +86,33 @@
 
         public async Task<Device> ObterPorId(string device_id)
         {
+            command = "SELECT device.id, device.name, device.created_at, device.updated_at, dplant.plant_id FROM \"TCC_COMP\".\"Device\" AS device INNER JOIN \"TCC_COMP\".\"DevicePlants\" AS dplant ON dplant.device_id=device.id WHERE id = @device_id";
+
+            using (var connection = new NpgsqlConnection(this.ConnectionString))
+            {
+                try
+                {
+
+                    await connection.OpenAsync();
+
+                    var retorno = await connection.QueryAsync<Device>(this.command, new { device_id = device_id });
+
+                    return retorno.FirstOrDefault();
+
+                }
+                catch (TimeoutException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu um timeout", GetType().FullName), ex);
+                }
+                catch (NpgsqlException ex)
+                {
+                    throw new Exception(string.Format("{0}.WithConnection() ocorreu uma exceção SQL Mensagem: {1}", GetType().FullName, ex.Message), ex);
+                }
+            }
+        }
+
+        public async Task<Device> VerificaDuplicado(string device_id)
+        {
             command = "SELECT device.id, device.name, device.created_at, device.updated_at FROM \"TCC_COMP\".\"Device\" AS device WHERE device.id = @device_id";
 
             using (var connection = new NpgsqlConnection(this.ConnectionString))

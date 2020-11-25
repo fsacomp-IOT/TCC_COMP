@@ -126,7 +126,7 @@
 
             bool retorno = false;
 
-            var consultaExistente = await _deviceRepository.ObterPorId(newDevice.id);
+            var consultaExistente = await _deviceRepository.VerificaDuplicado(newDevice.id);
 
             if(consultaExistente == null)
                 retorno = await _deviceRepository.Adicionar(_mapper.Map<Device>(newDevice));

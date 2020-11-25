@@ -8,6 +8,7 @@
     {
         Task<List<Device>> ObterTodos();
         Task<Device> ObterPorId(string id);
+        Task<Device> VerificaDuplicado(string device_id);
         Task<bool> Adicionar(Device newDevice);
         Task<bool> Atualizar(Device updatedDevice);
         Task<bool> Deletar(string device_id);
