@@ -124,7 +124,7 @@
             newDevice.updated_at = newDevice.created_at;
             newDevice.name = "Novo Jardim";
 
-            bool retorno = true;
+            bool retorno = false;
 
             var consultaExistente = await _deviceRepository.ObterPorId(newDevice.id);
 
@@ -172,8 +172,8 @@
 
             }
 
-            if (!string.IsNullOrEmpty(newDevice.plant_id))
-                retorno = await _deviceRepository.IncluirRelacaoPlanta(newDevice.id, newDevice.plant_id);
+            //if (!string.IsNullOrEmpty(newDevice.plant_id))
+            //    retorno = await _deviceRepository.IncluirRelacaoPlanta(newDevice.id, newDevice.plant_id);
 
             return retorno;
         }

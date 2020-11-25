@@ -78,9 +78,7 @@ namespace TCC_COMP.INFRA.DATA.Repository
 
         public async Task<bool> Adicionar(DeviceData newDeviceData)
         {
-            DynamicParameters dynamicParameters = new DynamicParameters();
-            dynamicParameters.AddDynamicParams(new
-            {
+            DynamicParameters dynamicParameters = new DynamicParameters( new{
                 newDeviceData.created_at,
                 newDeviceData.device_id,
                 newDeviceData.soil_humidity,
