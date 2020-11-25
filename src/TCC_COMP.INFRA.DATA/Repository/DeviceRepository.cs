@@ -86,7 +86,7 @@
 
         public async Task<Device> ObterPorId(string device_id)
         {
-            command = "SELECT device.id, device.name, device.created_at, device.updated_at, dplant.plant_id FROM \"TCC_COMP\".\"Device\" AS device INNER JOIN \"TCC_COMP\".\"DevicePlants\" AS dplant ON dplant.device_id=device.id WHERE id = @device_id";
+            command = "SELECT device.id, device.name, device.created_at, device.updated_at FROM \"TCC_COMP\".\"Device\" AS device WHERE device.id = @device_id";
 
             using (var connection = new NpgsqlConnection(this.ConnectionString))
             {

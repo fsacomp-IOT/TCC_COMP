@@ -87,9 +87,17 @@
                 try
                 {
                     await conn.OpenAsync();
-                    var ret = await conn.ExecuteAsync(command, new { device_id });
-                    if (ret > 0)
-                        response = true;
+
+                    using (var trans = await conn.BeginTransactionAsync())
+                    {
+                        var ret = await conn.ExecuteAsync(command, new { device_id });
+                        if (ret > 0)
+                        {
+                            response = true;
+                            await trans.CommitAsync();
+                        }
+                            
+                    }
                 }
                 catch (TimeoutException ex)
                 {
