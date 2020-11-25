@@ -124,7 +124,7 @@
             newDevice.updated_at = newDevice.created_at;
             newDevice.name = "Novo Jardim";
 
-            bool retorno = false;
+            bool retorno = true;
 
             var consultaExistente = await _deviceRepository.VerificaDuplicado(newDevice.id);
 
